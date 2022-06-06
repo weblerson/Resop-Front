@@ -35,6 +35,10 @@
         </div>
 
         <button id="register" class="btn btn-success">Cadastrar</button>
+      </section><br>
+
+      <section class = "container" id = "alert-message">
+        
       </section>
     </main>
     
@@ -42,19 +46,20 @@
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
     <script>
       const submitButton = document.querySelector("#register");
+      const alertSection = document.querySelector("#alert-message");
 
-      submitButton.addEventListener("click", async() => {
+      submitButton.addEventListener("click", () => {
         let name = document.querySelector("#name").value;
         let user = document.querySelector("#user").value;
         let password = document.querySelector("#password").value;
 
-        let data = JSON.stringify({
-          "Nome": name,
-          "email": `${user}@lerson.com`,
+        let data = {
+          "nome": name,
+          "email": user,
           "senha": password
-        });
+        };
 
-        await fetch(url,
+        fetch("http://127.0.0.1:8000/register",
         {
           headers: {
             "Accept": "Application/json",
@@ -65,7 +70,25 @@
         })
         .then(response => response.json())
         .then(response => {
-          
+          alertSection.innerHTML = "";
+
+          if(response.success) {
+            let messageContent = `
+            <div class="alert alert-success" role="alert">
+              ${response.response}
+            </div>
+            `;
+
+            alertSection.innerHTML = messageContent;
+          } else {
+            let messageContent = `
+            <div class="alert alert-danger" role="alert">
+              ${response.response}
+            </div>
+            `;
+
+            alertSection.innerHTML = messageContent;
+          }
         })
       });
     </script>
