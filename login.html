@@ -39,7 +39,7 @@
     
     <script>
       const submitButton = document.querySelector("#login");
-      const alertSection = document.querySelector("alert-message");
+      const alertSection = document.querySelector("#alert-message");
 
       submitButton.addEventListener('click', () => {
         let userField = document.querySelector("#user");
@@ -65,10 +65,13 @@
         })
         .then(response => response.json())
         .then(response => {
+          console.log(response);
           alertSection.innerHTML = "";
 
           if(response.success) {
+            window.localStorage.setItem("token", response.response);
 
+            window.location.href = "";
           } else {
             let messageContent = `
             <div class="alert alert-danger" role="alert">
