@@ -75,6 +75,7 @@
 
           if(response.success) {
             window.localStorage.setItem("token", response.response);
+						window.localStorage.setItem("user", user);
             window.location.replace("main.html");
 
           } else {
