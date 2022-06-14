@@ -43,42 +43,6 @@
     </section>
 
     <script>
-        const dataField = document.querySelector("#data");
-
-        let data = {
-            "token": window.localStorage.getItem("token")
-        };
-
-        fetch("http://127.0.0.1:8000/data",
-        {
-            headers:
-            {
-                "Content-Type": "Application/json",
-                "Accept": "Application/json"
-            },
-            method: "POST",
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(response => {
-            if(response.success) {
-                let content = `
-                    <div class="col">
-                        <button class="btn btn-primary" id="${response.response}">Mostrar nome</button>
-                    </div>
-
-                    <div class="col">
-                        <button class="btn btn-primary" id="${response.response}">Mostrar email</button>
-                    </div>
-                `;
-
-                dataField.innerHTML = content;
-            } else {
-                window.localStorage.removeItem("token");
-                window.location.replace("login.html");
-            }
-        });
-
         function logout() {
             window.localStorage.removeItem("token");
             window.location.replace("login.html");
