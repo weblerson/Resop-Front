@@ -1,0 +1,90 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script>
+        if(window.localStorage.getItem("token") === null) {
+            window.location.replace("login.html");
+        }
+    </script>
+
+    <title>Home - Resop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+
+  <body><br>
+    <header>
+        <section class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Menu - Ações</h1>
+                </div>
+
+                <div class="col">
+                    <button onclick="logout()" class="btn btn-danger">Logout</button>
+                </div>
+            </div>
+        </section>
+    </header><br>
+
+    <main>
+        <section class="container">
+            <div class="row" id="items">
+                
+            </div>
+        </section>
+    </main><br>
+
+    <section class="container" id="data">
+
+    </section>
+
+    <script>
+        const dataField = document.querySelector("#data");
+
+        let data = {
+            "token": window.localStorage.getItem("token")
+        };
+
+        fetch("http://127.0.0.1:8000/data",
+        {
+            headers:
+            {
+                "Content-Type": "Application/json",
+                "Accept": "Application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if(response.success) {
+                let content = `
+                    <div class="col">
+                        <button class="btn btn-primary" id="${response.response}">Mostrar nome</button>
+                    </div>
+
+                    <div class="col">
+                        <button class="btn btn-primary" id="${response.response}">Mostrar email</button>
+                    </div>
+                `;
+
+                dataField.innerHTML = content;
+            } else {
+                window.localStorage.removeItem("token");
+                window.location.replace("login.html");
+            }
+        });
+
+        function logout() {
+            window.localStorage.removeItem("token");
+            window.location.replace("login.html");
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
